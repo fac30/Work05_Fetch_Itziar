@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real world fetch</title>
+  </head>
+  <body>
+    <h2>Contact Form</h2>
+
+    <form action="/submit" method="POST">
+      <label for="name">Name:</label><br />
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter your name"
+        required
+      /><br /><br />
+
+      <label for="email">Email:</label><br />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+      /><br /><br />
+
+      <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+      //Challenge 1
+
+      // fetch("https://echo.oliverjam.workers.dev/status/404")
+      //   .then(console.log)
+      //   .catch(console.error);
+
+      //Challenge 2
+
+      // fetch("https://echo.oliverjam.workers.dev/status/404")
+      //   .then((response) => {
+      //     if (response.ok) {
+      //       console.log(response);
+      //     } else {
+      //       throw new Error(response.status);
+      //     }
+      //   })
+      //   .catch(console.error);
+
+      //Challenge 3
+
+      // fetch("https://echo.oliverjam.workers.dev/json", {
+      //   method: "POST",
+      //   headers: {
+      //     "content-type": "application/json"
+      //   }
+      //   body: JSON.stringify({name: 'Itziar Cantero'})
+      // })
+      // .then((response) => {
+      //   if (!response.ok) throw new Error(response.status);
+      //   return response.json();
+      // })
+      // .then((json) => console.log(json))
+      // .catch((error) => console.error(error));
+
+      //Challenge 4 - querySelector
+      // const myForm = document.querySelector("form");
+
+      // myForm.addEventListener("submit", (event) => {
+      //   event.preventDefault();
+
+      //   const name = document.querySelector("#name").value;
+      //   const email = document.querySelector("#email").value;
+
+      //   const data = {
+      //     name,
+      //     email
+      //   };
+
+      //   fetch("https://echo.oliverjam.workers.dev/json", {
+      //     method: "POST",
+      //     headers: {
+      //       "content-type": "application/json"
+      //     }
+      //     body: JSON.stringify(data)
+      //   })
+      //   .then((response) => {
+      //     if (!response.ok) throw new Error(response.status);
+      //     return response.json();
+      //   })
+      //   .then((json) => console.log(json))
+      //   .catch((error) => console.error(error));
+      // });
+
+      //Challenge 5
+      const myForm = document.querySelector("form");
+
+      myForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        fetch("https://echo.oliverjam.workers.dev/json", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          }
+          body: JSON.stringify(data)
+        })
+        .then((response) => {
+          if (!response.ok) throw new Error(response.status);
+          return response.json();
+        })
+        .then((json) => console.log(json))
+        .catch((error) => console.error(error));
+      });
+    </script>
+  </body>
+</html>

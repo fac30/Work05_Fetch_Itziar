@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real world fetch</title>
+  </head>
+  <body>
+    <h1>Pokemon Search</h1>
+
+    <form>
+      <label for="pokemon">Pokemon name</label>
+      <input id="pokemon" name="pokemon" type="search" required />
+
+      <button type="submit" value="Search">Search</button>
+    </form>
+    <output></output>
+    <script>
+      const pokeForm = document.querySelector("form");
+      const output = document.querySelector("output");
+
+      pokeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        output.innerHTML = "";
+
+        const formData = new FormData(pokeForm);
+        const name = formData.get("pokemon").toLowerCase();
+
+        fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(response.status);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const headerElement = document.createElement("h2");
+            headerElement.textContent = data.name;
+
+            const imgElement = document.createElement("img");
+            imgElement.src = data.sprites.front_default;
+            imgElement.alt = `${data.name} sprite`;
+
+            output.appendChild(headerElement);
+            output.appendChild(imgElement);
+          })
+          .catch((error) => {
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent = error.message;
+            output.appendChild(errorMessage);
+          });
+      });
+    </script>
+  </body>
+</html>
